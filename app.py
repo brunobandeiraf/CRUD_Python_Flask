@@ -17,6 +17,18 @@ def create_task():
    print(tasks)
    return jsonify({"message": "Nova tarefa criada com sucesso"})
 
+# Listagem de Todas as Tarefas Cadastradas
+@app.route('/tasks', methods=['GET'])
+def get_tasks():
+    task_list = [task.to_dict() for task in tasks]
+ 
+    output = {
+        "tasks": task_list,
+        "total_tasks": len(task_list)
+    }
+    return jsonify(output)
+
+
 
 # Verifica se o script está sendo executado diretamente
 # Inicia o servidor Flask com modo debug ativado
