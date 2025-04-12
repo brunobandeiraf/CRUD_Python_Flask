@@ -58,6 +58,21 @@ def update_task(id):
    
    return jsonify({"message": "Tarefa atualizada com sucesso"})
 
+# Deletar tarefa
+@app.route('/tasks/<int:id>', methods=['DELETE'])
+def delete_task(id):
+   task = None
+   for t in tasks:
+     if t.id == id:
+       task = t
+       break
+ 
+     if not task:
+       return jsonify({"message": "Não foi possível encontrar a atividade"}), 404
+     
+     tasks.remove(task)
+     return jsonify({"message": "Tarefa deletada com sucesso"})
+
 
 # Verifica se o script está sendo executado diretamente
 # Inicia o servidor Flask com modo debug ativado
