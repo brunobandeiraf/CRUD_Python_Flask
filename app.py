@@ -1,14 +1,24 @@
-from flask import Flask  # Importa a classe Flask do módulo flask
+from flask import Flask, request, jsonify 
+from models.task import Task
 
 app = Flask(__name__)  # Cria uma instância da aplicação Flask
 
-@app.route("/")  # Define a rota para a URL raiz ("/")
-def hello_world():
-    return "Hello world!"  # Retorna uma resposta simples para a rota raiz
+tasks = []
+task_id_control = 1
 
-@app.route("/about")  # Define a rota para a URL "/about"
-def about():
-    return "Página sobre"  # Retorna uma resposta simples para a rota "/about"
+# Criar uma nova tarefa
+@app.route('/tasks', methods=['POST'])
+def create_task():
+   global task_id_control # Variável global
+   data = request.get_json()
+   new_task = Task(id=task_id_control, title=data['title'], description=data.get("description", ""))
+   task_id_control += 1
+   tasks.append(new_task)
+   print(tasks)
+   return jsonify({"message": "Nova tarefa criada com sucesso"})
 
-if __name__ == "__main__":  # Verifica se o script está sendo executado diretamente
-    app.run(debug=True)  # Inicia o servidor Flask com modo debug ativado
+
+# Verifica se o script está sendo executado diretamente
+# Inicia o servidor Flask com modo debug ativado
+if __name__ == "__main__":  
+    app.run(debug=True)  
